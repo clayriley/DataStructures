@@ -124,4 +124,13 @@ class SplayTree():
                 g.right = self
 
     def _uproot(self):
-        pass
+        """
+        Detaches the root node from its children and returns them.
+        O(1)
+        """
+        left, right = this.left, this.right
+        if left is not None:
+            left.parent = None
+        if right is not None:
+            right.parent = None
+        return left, right
