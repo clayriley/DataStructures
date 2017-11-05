@@ -17,7 +17,7 @@ class SplayTree():
         this.right = None
 
     def search(self, value):
-        pass
+        return self._find(value)
 
     def insert(self, value):
         n = Splay(value)
@@ -27,13 +27,41 @@ class SplayTree():
         pass
 
     def contains(self, value):
-        pass
+        """
+        Returns whether or not the specified value exists in this tree.  Does 
+        not splay the tree, since it does not return a node.
+        O(n), amortized O(log n).
+        """
+        n = self._find(value)
+        return n.value == value
 
     def _find(self, value):
         pass
 
     def _splay(self):
-        pass
+
+        # case 1: already the root -> do nothing
+        if self.parent is not None:
+            grandparent = self.parent.parent
+
+            # case 2: one rotation to root
+            if grandparent is None:
+                self._zig()
+
+            else: # case 3: multiple rotations to root
+                rightOfLeft = self.parent.right is self and grandparent.left is self.parent
+                leftOfRight = self.parent.left is self and grandparent.right is self.parent
+
+                # case 3a: zigzag
+                if rightOfLeft or leftOfRight:
+                    self.zig()
+                    self.zig()
+
+                # case 3b: zigzig
+                else:
+                    self.parent.zig()
+                    self.zig()
+                self._splay() # recur
     
     def _zig(self):
         pass
