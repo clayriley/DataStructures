@@ -24,7 +24,35 @@ class SplayTree():
         pass
 
     def delete(self, value):
-        pass
+        """
+        Searches for the specified value.  If found, splays the tree around it; 
+        removes it from the tree; finds its immediate predecessor; splays the 
+        left subtree around that node; and attaches it to the right subtree.  If 
+        not found, splays the tree around its nearest parent.  Returns the new 
+        root.
+        O(n), amortized O(log n).
+        """
+        n = self._find(value)  # find and splay relevant node
+        n.splay()
+
+        if n.value == value:  # only if value actually found
+            left, right = n._uproot()
+            
+            # there is a left child: splay around its maximum, connect to right
+            if left is not None: 
+                while left.right is not None:
+                    left = left.right
+                left.splay()
+                left.right = right
+                if right is not None:   
+                    right.parent = left
+                n = left
+
+            # there is no left child: all we need is the right
+            else:
+                n = right
+
+        return n  # new root of the entire tree
 
     def contains(self, value):
         """
