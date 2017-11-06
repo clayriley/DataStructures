@@ -11,10 +11,10 @@ search all are O(n) operations; but they are amortized O(log n).
 class SplayTree():
 
     def __init__(self, value):
-        this.value = value
-        this.parent = None
-        this.left = None
-        this.right = None
+        self.value = value
+        self.parent = None
+        self.left = None
+        self.right = None
 
     def search(self, value):
         n = self._find(value)
@@ -28,7 +28,7 @@ class SplayTree():
         O(n), amortized O(log n).
         """
         insertion_point = self._find(value)
-        n = Splay(value)
+        n = SplayTree(value)
         
         # value already in the tree; add at leftmost position in right subtreepa
         if value == insertion_point.value:
