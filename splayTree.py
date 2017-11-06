@@ -29,7 +29,7 @@ class SplayTree():
         """
         insertion_point = self._find(value)
         n = SplayTree(value)
-        
+
         # value already in the tree; add at leftmost position in right subtreepa
         if value == insertion_point.value:
             if insertion_point.right is None:
@@ -51,6 +51,9 @@ class SplayTree():
         else:
             insertion_point.right = n
             n.parent = insertion_point
+
+        n._splay()
+        return n # return new root
 
     def delete(self, value):
         """
@@ -137,12 +140,12 @@ class SplayTree():
                 leftOfRight = self.parent.left is self and grandparent.right is self.parent
 
                 if rightOfLeft or leftOfRight: # case 3a: zigzag
-                    self.zig()
-                    self.zig()
+                    self._zig()
+                    self._zig()
 
                 else: # case 3b: zigzig
-                    self.parent.zig()
-                    self.zig()
+                    self.parent._zig()
+                    self._zig()
 
                 self._splay() # recur until case 1 or 2 applies
     
@@ -155,7 +158,7 @@ class SplayTree():
             if self is self.parent.left:
                 self._rotateClockwise()
             elif self is self.parent.right:
-                self._rotateCounterClockwise()
+                self._rotateCounterclockwise()
 
     def _rotateClockwise(self):
         """
