@@ -21,24 +21,6 @@ class SplayTree():
         n._splay()
         return n
 
-    def _successor(self):
-        """
-        Gets the successor to this node.  Useful for printing trees.
-        """
-        if self.right is None:
-            # get first rightward ancestor
-            m = self
-            n = m.parent
-            while n is not None and m is n.right:
-                m = n
-                n = n.parent
-        else:
-            # get leftmost of right child
-            n = self.right
-            while n.left is not None:
-                n = n.left
-        return n
-
     def insert(self, value):
         """
         Inserts a new node with the specified value into the tree, which is then 
@@ -226,3 +208,22 @@ class SplayTree():
         if right is not None:
             right.parent = None
         return left, right
+
+    def _successor(self):
+        """
+        Gets the successor to this node.  Useful for making an inorder 
+        traversal, e.g. to print as sorted.
+        """
+        if self.right is None:
+            # get first rightward ancestor
+            m = self
+            n = m.parent
+            while n is not None and m is n.right:
+                m = n
+                n = n.parent
+        else:
+            # get leftmost of right child
+            n = self.right
+            while n.left is not None:
+                n = n.left
+        return n
