@@ -92,11 +92,19 @@ class SplayTree():
         n = self._find(value)
         return n.value == value
 
+    def __str__(self):
+        # recur in children
+        left = str(self.left) if self.left is not None else ""
+        right = str(self.right) if self.right is not None else ""
+        # combine with this node's string
+        return "( " + left + str(self.value) + right + " )"
+
     def _find(self, value):
         """
         Finds the given value in the tree rooted at this tree, or its would-be 
         parent if not found.  Runs in time linear in the height of the tree.  
-        Does not splay the tree.
+        Does not splay the tree.  Will raise an error if value is not comparable 
+        with the values already in the tree.
 
         O(n), amortized O(log n)
         """ 
