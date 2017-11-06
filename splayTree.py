@@ -17,11 +17,58 @@ class SplayTree():
         this.right = None
 
     def search(self, value):
-        return self._find(value)
+        n = self._find(value)
+        n._splay()
+        return n
+
+    def _successor(self):
+        """
+        Gets the successor to this node.  Useful for printing trees.
+        """
+        if self.right is None:
+            # get first rightward ancestor
+            m = self
+            n = m.parent
+            while n is not None and m is n.right:
+                m = n
+                n = n.parent
+        else:
+            # get leftmost of right child
+            n = self.right
+            while n.left is not None:
+                n = n.left
+        return n
 
     def insert(self, value):
+        """
+        Inserts a new node with the specified value into the tree, which is then 
+        splayed around it.
+        O(n), amortized O(log n).
+        """
+        insertion_point = self._find(value)
         n = Splay(value)
-        pass
+        
+        # value already in the tree; add at leftmost position in right subtreepa
+        if value == insertion_point.value:
+            if insertion_point.right is None:
+                insertion_point.right = n
+                n.parent = insertion_point
+            else:
+                insertion_point = insertion_point.right
+                while insertion_point.left is not None:
+                    insertion_point = insertion_point.left
+                insertion_point.left = n
+                n.parent = insertion_point
+
+        # value belongs to the left
+        elif value < insertion_point.value:
+            insertion_point.left = n
+            n.parent = insertion_point
+
+        # value belongs to the right
+        else:
+            insertion_point.right = n
+            n.parent = insertion_point
 
     def delete(self, value):
         """
@@ -33,7 +80,7 @@ class SplayTree():
         O(n), amortized O(log n).
         """
         n = self._find(value)  # find and splay relevant node
-        n.splay()
+        n._splay()
 
         if n.value == value:  # only if value actually found
             left, right = n._uproot()
@@ -42,7 +89,7 @@ class SplayTree():
             if left is not None: 
                 while left.right is not None:
                     left = left.right
-                left.splay()
+                left._splay()
                 left.right = right
                 if right is not None:   
                     right.parent = left
@@ -64,7 +111,24 @@ class SplayTree():
         return n.value == value
 
     def _find(self, value):
-        pass
+        """
+        Finds the given value in the tree rooted at this tree, or its would-be 
+        parent if not found.  Runs in time linear in the height of the tree.  
+        Does not splay the tree.
+
+        O(n), amortized O(log n)
+        """ 
+        # case 1: look deeper, left
+        if self.value > value and self.left is not None:
+            return self.left._find(value)
+
+        # case 2: look deeper, right
+        if self.value < value and self.right is not None:
+            return self.right._find(value)
+
+        # case 3: found it, or nothing to find
+        else:
+            return self
 
     def _splay(self):
         """
