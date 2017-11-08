@@ -207,13 +207,33 @@ class SplayInsertTests(unittest.TestCase):
         self.root = self.root.delete(6)        
         self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
         
+    def test_search(self):
+        """searching tests"""
 
-    #def testSearch(self):
-    #def testContains(self):
-    #def testGetRoot(self):
-    #def testIter(self):
-    #def testZig(self):
-    #def testFind(self):
+        # test setup root
+        self.assertEqual(str(self.root), "(3)")
+        # search for root
+        self.root = self.root.search(3)
+        self.assertEqual(self.root.value, 3)
+        # search deeper
+        self.root = self.root.insert(1)
+        self.root = self.root.insert(7)
+        self.root = self.root.insert(4)
+        self.root = self.root.insert(2)
+        self.root = self.root.insert(6)
+        self.root = self.root.insert(8)
+        self.root = self.root.insert(5)
+        self.root = self.root.search(1)
+        self.assertEqual(self.root.value, 1)
+        self.assertEqual(str(self.root), "(1((2((3)4))5((6(7))8)))")
+
+    
+    
+    #def test_contains(self):
+    #def test_getRoot(self):
+    #def test___iter__(self):
+    #def test__zig(self):
+    #def test__find(self):
         
 
 if __name__ == "__main__":
