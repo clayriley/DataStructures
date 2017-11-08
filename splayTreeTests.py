@@ -8,10 +8,9 @@ import splayTree
 
 class SplayInsertTests(unittest.TestCase):
 
-    #firstTree = ""
-
     def setUp(self):
         self.root = splayTree.SplayTree(3)
+        print("\nTesting method", self._testMethodName+"...")
     
     def testInsert(self):
         
@@ -155,11 +154,42 @@ class SplayInsertTests(unittest.TestCase):
         self.assertIsNone(self.root.right.right)
 
 
+    def testStr(self):
+        """testing strings"""
+        
+        # test setup root
+        self.assertEqual(str(self.root), "(3)")
+        # insert and test
+        self.root = self.root.insert(1)
+        self.assertEqual(str(self.root), "(1(3))")
+        self.root = self.root.insert(7)
+        self.assertEqual(str(self.root), "(((1)3)7)")
+        self.root = self.root.insert(4)
+        self.assertEqual(str(self.root), "(((1)3)4(7))")
+        self.root = self.root.insert(2)
+        self.assertEqual(str(self.root), "((1)2((3)4(7)))")
+        self.root = self.root.insert(6)
+        self.assertEqual(str(self.root), "(((1)2((3)4))6(7))")
+        self.root = self.root.insert(8)
+        self.assertEqual(str(self.root), "(((((1)2((3)4))6)7)8)")
+        self.root = self.root.insert(5)
+        self.assertEqual(str(self.root), "((((1)2(3))4)5((6(7))8))")
+        # search and test
+        self.root = self.root.search(1)
+        self.assertEqual(str(self.root), "(1((2((3)4))5((6(7))8)))")
+        # delete and test
+        self.root = self.root.delete(6)        
+        self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
+
+        
+
+    # assuming both insertion and str pass:
+    # we can use str from here on out as a shorthand.
+
     #def testDelete(self):
     #def testSearch(self):
     #def testContains(self):
     #def testGetRoot(self):
-    #def testStr(self):
     #def testIter(self):
     #def testZig(self):
     #def testFind(self):
