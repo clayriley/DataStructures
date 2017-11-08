@@ -126,7 +126,7 @@ class SplayTree():
         left = str(self.left) if self.left is not None else ""
         right = str(self.right) if self.right is not None else ""
         # combine with this node's string
-        return "< " + left + " > " + str(self.value) + " < " + right + " >"
+        return "(" + left + str(self.value) + right + ")"
 
     def _find(self, value):
         """
@@ -239,7 +239,7 @@ class SplayTree():
         Detaches the root node from its children and returns them.
         O(1)
         """
-        left, right = this.left, this.right
+        left, right = self.left, self.right
         if left is not None:
             left.parent = None
         if right is not None:
