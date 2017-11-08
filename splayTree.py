@@ -95,12 +95,38 @@ class SplayTree():
         n = self._find(value)
         return n.value == value
 
+    def getRoot(self):
+        """
+        Returns the root of the tree this node is in.  Helpful if the root was 
+        changed but pointers were not updated.
+        O(n), amortized O(log n).
+        """
+        n = self
+        while n.parent is not None:
+            n = n.parent
+        return n
+
+    def __iter__(self):
+        """
+        Generates a sorted traversal of the values in the tree.
+        O(n^2), amortized O(n log n), but on average much better because one 
+        long _successor call typically causes many short ones. 
+        """
+        n = self.getRoot()
+        while n.left is not None:
+            n = n.left
+        while True:
+            yield n.value
+            n = n._successor()
+            if n is None:
+                break
+
     def __str__(self):
         # recur in children
         left = str(self.left) if self.left is not None else ""
         right = str(self.right) if self.right is not None else ""
         # combine with this node's string
-        return "( " + left + str(self.value) + right + " )"
+        return "< " + left + " > " + str(self.value) + " < " + right + " >"
 
     def _find(self, value):
         """
