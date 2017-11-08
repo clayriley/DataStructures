@@ -154,12 +154,16 @@ class SplayInsertTests(unittest.TestCase):
         self.assertIsNone(self.root.right.left.right.right)
         self.assertIsNone(self.root.right.right)
 
+        # test insertion failure
+        self.assertRaises(TypeError,self.root.insert, "1")
+
 
     def test___str__(self):
         """testing string printing"""
         
         # test setup root
         self.assertEqual(str(self.root), "(3)")
+
         # insert and test
         self.root = self.root.insert(1)
         self.assertEqual(str(self.root), "(1(3))")
@@ -175,9 +179,11 @@ class SplayInsertTests(unittest.TestCase):
         self.assertEqual(str(self.root), "(((((1)2((3)4))6)7)8)")
         self.root = self.root.insert(5)
         self.assertEqual(str(self.root), "((((1)2(3))4)5((6(7))8))")
+
         # search and test
         self.root = self.root.search(1)
         self.assertEqual(str(self.root), "(1((2((3)4))5((6(7))8)))")
+
         # delete and test
         self.root = self.root.delete(6)        
         self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
@@ -206,15 +212,23 @@ class SplayInsertTests(unittest.TestCase):
         self.root = self.root.search(1)
         self.root = self.root.delete(6)        
         self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
+
+        # deletion failures
+        self.assertRaises(TypeError, self.root.delete, "1")
+        self.root = self.root.delete(6)
+        self.assertEqual(str(self.root), "(((1(2((3)4)))5)7(8))")
+        
         
     def test_search(self):
         """searching tests"""
 
         # test setup root
-        self.assertEqual(str(self.root), "(3)")
+        self.assertEqual(self.root.value, 3)
+
         # search for root
         self.root = self.root.search(3)
         self.assertEqual(self.root.value, 3)
+
         # search deeper
         self.root = self.root.insert(1)
         self.root = self.root.insert(7)
@@ -227,9 +241,43 @@ class SplayInsertTests(unittest.TestCase):
         self.assertEqual(self.root.value, 1)
         self.assertEqual(str(self.root), "(1((2((3)4))5((6(7))8)))")
 
-    
-    
-    #def test_contains(self):
+        # search failure
+        self.assertRaises(TypeError, self.root.search, "1")
+
+    def test_contains(self):
+        """containment searches"""
+        
+        # test setup root
+        self.assertEqual(self.root.value, 3)
+        self.assertTrue(self.root.contains(3)) # returns a bool, so no splaying
+        self.assertEqual(self.root.value, 3)
+        self.assertFalse(self.root.contains(2))
+        self.assertEqual(self.root.value, 3)
+
+        # test more complex tree
+        self.root = self.root.insert(1)
+        self.root = self.root.insert(7)
+        self.root = self.root.insert(4)
+        self.root = self.root.insert(2)
+        self.root = self.root.insert(6)
+        self.root = self.root.insert(8)
+        self.root = self.root.insert(5)
+        self.root = self.root.search(1)
+        self.root = self.root.delete(6)
+        self.assertTrue(self.root.contains(5))
+        self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
+        self.assertTrue(self.root.contains(2))
+        self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
+        self.assertFalse(self.root.contains(6))
+        self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
+        self.assertFalse(self.root.contains(100))
+        self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
+
+        # containment failure
+        self.assertRaises(TypeError, self.root.contains, "1")
+        self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
+
+
     #def test_getRoot(self):
     #def test___iter__(self):
     #def test__zig(self):
