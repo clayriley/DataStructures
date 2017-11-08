@@ -10,9 +10,10 @@ class SplayInsertTests(unittest.TestCase):
 
     def setUp(self):
         self.root = splayTree.SplayTree(3)
-        print("\nTesting method", self._testMethodName+"...")
+        print("\nTesting method:", self._testMethodName[5:] + "...")
     
-    def testInsert(self):
+    def test_insert(self):
+        """testing insertion"""
         
         # test that initial node is correctly set up
         self.assertEqual(self.root.value, 3)
@@ -154,8 +155,8 @@ class SplayInsertTests(unittest.TestCase):
         self.assertIsNone(self.root.right.right)
 
 
-    def testStr(self):
-        """testing strings"""
+    def test___str__(self):
+        """testing string printing"""
         
         # test setup root
         self.assertEqual(str(self.root), "(3)")
@@ -181,12 +182,32 @@ class SplayInsertTests(unittest.TestCase):
         self.root = self.root.delete(6)        
         self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
 
-        
-
     # assuming both insertion and str pass:
     # we can use str from here on out as a shorthand.
 
-    #def testDelete(self):
+    def test_delete(self):
+        """test deletion"""
+
+        # test setup root
+        self.assertEqual(str(self.root), "(3)")
+        
+        # delete only node
+        deleted = self.root.delete(3)
+        self.assertIsNone(deleted)
+
+        # delete deeper node
+        self.root = self.root.insert(1)
+        self.root = self.root.insert(7)
+        self.root = self.root.insert(4)
+        self.root = self.root.insert(2)
+        self.root = self.root.insert(6)
+        self.root = self.root.insert(8)
+        self.root = self.root.insert(5)
+        self.root = self.root.search(1)
+        self.root = self.root.delete(6)        
+        self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
+        
+
     #def testSearch(self):
     #def testContains(self):
     #def testGetRoot(self):
