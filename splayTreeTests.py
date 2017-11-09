@@ -22,6 +22,8 @@ class SplayInsertTests(unittest.TestCase):
         self.assertIsNone(self.root.right)
     
         # insert second node and test structure of tree
+        # (implicitly tests find case: element not found)
+        # (implicitly tests splay case: zig CW)
         self.root = self.root.insert(1)
         self.assertEqual(self.root.value, 1)
         self.assertIsNone(self.root.parent)
@@ -32,6 +34,8 @@ class SplayInsertTests(unittest.TestCase):
         self.assertIsNone(self.root.right.right)
     
         # insert third node and test structure of tree
+        # (implicitly tests find case: element not found)
+        # (implicitly tests splay case: zigzig CCW)
         self.root = self.root.insert(7)
         self.assertEqual(self.root.value, 7)
         self.assertIsNone(self.root.parent)
@@ -45,6 +49,8 @@ class SplayInsertTests(unittest.TestCase):
         self.assertIsNone(self.root.right)
 
         # insert fourth node and test structure of tree
+        # (implicitly tests find case: element not found)
+        # (implicitly tests splay case: zigzag CCW-CW)
         self.root = self.root.insert(4) 
         self.assertEqual(self.root.value, 4)
         self.assertIsNone(self.root.parent)
@@ -61,6 +67,8 @@ class SplayInsertTests(unittest.TestCase):
         self.assertIsNone(self.root.right.right)
 
         # insert fifth node and test structure of tree
+        # (implicitly tests find case: element not found)
+        # (implicitly tests splay case: zigzag-zig CCW+CW-CW)
         self.root = self.root.insert(2) 
         self.assertEqual(self.root.value, 2)
         self.assertIsNone(self.root.parent)
@@ -80,6 +88,8 @@ class SplayInsertTests(unittest.TestCase):
         self.assertIsNone(self.root.right.right.right)
 
         # insert sixth node and test structure of tree
+        # (implicitly tests find case: element not found)
+        # (implicitly tests splay case: zigzag-zig CW+CCW-CCW)
         self.root = self.root.insert(6) 
         self.assertEqual(self.root.value, 6)
         self.assertIsNone(self.root.parent)
@@ -102,6 +112,8 @@ class SplayInsertTests(unittest.TestCase):
         self.assertIsNone(self.root.right.right)        
 
         # insert seventh node and test structure of tree
+        # (implicitly tests find case: element not found)
+        # (implicitly tests splay case: zigzig CCW)
         self.root = self.root.insert(8) 
         self.assertEqual(self.root.value, 8)
         self.assertIsNone(self.root.parent)
@@ -127,6 +139,8 @@ class SplayInsertTests(unittest.TestCase):
         self.assertIsNone(self.root.right)
 
         # insert eighth node and test structure of tree
+        # (implicitly tests find case: element not found)
+        # (implicitly tests splay case: zigzig-zigzig-zig CCW-CW-CW)
         self.root = self.root.insert(5) 
         self.assertEqual(self.root.value, 5)
         self.assertIsNone(self.root.parent)
@@ -155,6 +169,7 @@ class SplayInsertTests(unittest.TestCase):
         self.assertIsNone(self.root.right.right)
 
         # test insertion failure
+        # (implicitly tests find case: tree datatype error) 
         self.assertRaises(TypeError,self.root.insert, "1")
 
 
@@ -198,10 +213,15 @@ class SplayInsertTests(unittest.TestCase):
         self.assertEqual(str(self.root), "(3)")
         
         # delete only node
+        # (implicitly tests find case: element found)
+        # (implicitly tests splay case: already root)
         deleted = self.root.delete(3)
         self.assertIsNone(deleted)
 
         # delete deeper node
+        # (implicitly tests find case: element found)
+        # (implicitly tests splay case: zigzag-zig CW+CCW-CCW)
+        # (implicitly tests splay case: zig CCW)
         self.root = self.root.insert(1)
         self.root = self.root.insert(7)
         self.root = self.root.insert(4)
@@ -214,6 +234,9 @@ class SplayInsertTests(unittest.TestCase):
         self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
 
         # deletion failures
+        # (implicitly tests find case: tree data type error)
+        # (implicitly tests find case: element not found)
+        # (implicitly tests splay case: zigzag CW+CCW)
         self.assertRaises(TypeError, self.root.delete, "1")
         self.root = self.root.delete(6)
         self.assertEqual(str(self.root), "(((1(2((3)4)))5)7(8))")
