@@ -249,10 +249,14 @@ class SplayInsertTests(unittest.TestCase):
         self.assertEqual(self.root.value, 3)
 
         # search for root
+        # (implicitly tests find case: element found)
+        # (implicitly tests splay case: already root)
         self.root = self.root.search(3)
         self.assertEqual(self.root.value, 3)
 
         # search deeper
+        # (implicitly tests find case: element found)
+        # (implicitly tests splay case: zigzig-zig CW+CW-CW)
         self.root = self.root.insert(1)
         self.root = self.root.insert(7)
         self.root = self.root.insert(4)
@@ -265,6 +269,11 @@ class SplayInsertTests(unittest.TestCase):
         self.assertEqual(str(self.root), "(1((2((3)4))5((6(7))8)))")
 
         # search failure
+        # (implicitly tests find case: element not found)
+        # (implicitly tests splay case: zigzig CCW+CCW)
+        self.root = self.root.search(10)
+        self.assertEqual(self.root.value, 8)
+        self.assertEqual(str(self.root), "(((1(2((3)4)))5(6(7)))8)")
         self.assertRaises(TypeError, self.root.search, "1")
 
     def test_contains(self):
