@@ -309,12 +309,35 @@ class SplayInsertTests(unittest.TestCase):
         self.assertRaises(TypeError, self.root.contains, "1")
         self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
 
+    def test_getRoot(self):
 
-    #def test_getRoot(self):
-    #def test___iter__(self):
-    #def test__zig(self):
-    #def test__find(self):
+        # test setup root
+        self.assertEqual(self.root.value, 3)
+        self.root = self.root.getRoot()
+        self.assertEqual(self.root.value, 3)
+        self.root = self.root.insert(1)
+        self.root = self.root.insert(7)
+        self.root = self.root.insert(4)
+        self.root = self.root.insert(2)
+        self.root = self.root.insert(6)
+        self.root = self.root.insert(8)
+        self.root = self.root.insert(5)
+        self.root.search(1) # without storing returned node!
+        self.assertEqual(str(self.root), "((2((3)4))5((6(7))8))")
+        self.root = self.root.getRoot()
+        self.assertEqual(str(self.root), "(1((2((3)4))5((6(7))8)))")
         
+    def test___iter__(self):  
+        self.root = self.root.insert(1)
+        self.root = self.root.insert(7)
+        self.root = self.root.insert(4)
+        self.root = self.root.insert(2)
+        self.root = self.root.insert(6)
+        self.root = self.root.insert(8)
+        self.root = self.root.insert(5)
+        asList = list(self.root)
+        for i in range(len(asList)):
+            self.assertEqual(asList[i], [1, 2, 3, 4, 5, 6, 7, 8][i])
 
 if __name__ == "__main__":
     unittest.main()
