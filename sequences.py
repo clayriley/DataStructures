@@ -32,7 +32,7 @@ class Sequence(abc.ABC):
         raise NotImplementedError
 
     def __str__(self): # relies on __iter__ implementation
-        return "["+", ".join(str(element) for element in self)+"]"
+        return "[ "+" - ".join(str(element) for element in self)+" ]"
 
 
 class SplaySequence(Sequence):
@@ -66,4 +66,25 @@ class SplaySequence(Sequence):
         return iter(self.tree)
 
 
+class ListSequence(Sequence):
+    """
+    An untyped sequence with a list (wrapper) underlying it.
+    """
 
+    def __init__(self):
+        self.sequence = myList.List()
+
+    def add(self, element):
+        self.sequence.insert(element)
+
+    def remove(self, element):
+        self.sequence.remove(element)
+    
+    def size(self):
+        return self.sequence.size
+
+    def __contains__(self, element):
+        return element in self.sequence
+
+    def __iter__(self):
+        return (item for item in self.sequence)
