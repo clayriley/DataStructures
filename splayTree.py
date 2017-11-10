@@ -294,7 +294,7 @@ class SplayTree():
         else: # perform type check
             if type(value) != self.typing:
                 raise TypeError("Type " + str(type(value)) + " is incompatible" +
-                                " with tree of type " + self.typing + ".")
+                                " with tree of type " + str(self.typing) + ".")
                 # TODO allow different yet comparable types
 
         # if no error:
