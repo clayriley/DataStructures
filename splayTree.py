@@ -278,7 +278,7 @@ class SplayNode():
 class SplayTree():
 
     def __init__(self, typing=None):
-        self.typing = typing
+        self.typing = typing # may delay typing and infer upon first addition
         self.root = None
         self._size = 0
     
