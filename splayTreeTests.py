@@ -9,7 +9,7 @@ import splayTree
 class SplayInsertTests(unittest.TestCase):
 
     def setUp(self):
-        self.root = splayTree.SplayTree(3)
+        self.root = splayTree.SplayNode(3)
         print("\nTesting method:", self._testMethodName[5:] + "...")
     
     def test_insert(self):
@@ -276,14 +276,14 @@ class SplayInsertTests(unittest.TestCase):
         self.assertEqual(str(self.root), "(((1(2((3)4)))5(6(7)))8)")
         self.assertRaises(TypeError, self.root.search, "1")
 
-    def test_contains(self):
-        """containment searches"""
+    def test_contains_deprecated(self):
+        """old containment searches"""
         
         # test setup root
         self.assertEqual(self.root.value, 3)
-        self.assertTrue(self.root.contains(3)) # returns a bool, so no splaying
+        self.assertTrue(self.root.contains_deprecated(3)) # returns a bool, so no splaying
         self.assertEqual(self.root.value, 3)
-        self.assertFalse(self.root.contains(2))
+        self.assertFalse(self.root.contains_deprecated(2))
         self.assertEqual(self.root.value, 3)
 
         # test more complex tree
@@ -296,18 +296,57 @@ class SplayInsertTests(unittest.TestCase):
         self.root = self.root.insert(5)
         self.root = self.root.search(1)
         self.root = self.root.delete(6)
-        self.assertTrue(self.root.contains(5))
+        self.assertTrue(self.root.contains_deprecated(5))
         self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
-        self.assertTrue(self.root.contains(2))
+        self.assertTrue(self.root.contains_deprecated(2))
         self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
-        self.assertFalse(self.root.contains(6))
+        self.assertFalse(self.root.contains_deprecated(6))
         self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
-        self.assertFalse(self.root.contains(100))
+        self.assertFalse(self.root.contains_deprecated(100))
         self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
 
         # containment failure
-        self.assertRaises(TypeError, self.root.contains, "1")
+        self.assertRaises(TypeError, self.root.contains_deprecated, "1")
         self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
+
+    def test_contains(self):
+        """containment searches"""
+        
+        # test setup root
+        self.assertEqual(self.root.value, 3)
+        has, self.root = self.root.contains(3)
+        self.assertTrue(has)
+        self.assertEqual(self.root.value, 3)
+        has, self.root = self.root.contains(2)
+        self.assertFalse(has)
+        self.assertEqual(self.root.value, 3)
+
+        # test more complex tree
+        self.root = self.root.insert(1)
+        self.root = self.root.insert(7)
+        self.root = self.root.insert(4)
+        self.root = self.root.insert(2)
+        self.root = self.root.insert(6)
+        self.root = self.root.insert(8)
+        self.root = self.root.insert(5)
+        self.root = self.root.search(1)
+        self.root = self.root.delete(6)
+        has, self.root = self.root.contains(5)
+        self.assertTrue(has)
+        self.assertEqual(str(self.root), "((1(2((3)4)))5((7)8))")
+        has, self.root = self.root.contains(2)
+        self.assertTrue(has)
+        self.assertEqual(str(self.root), "((1)2(((3)4)5((7)8)))")
+        has, self.root = self.root.contains(6)
+        self.assertFalse(has)
+        self.assertEqual(str(self.root), "(((1)2(((3)4)5))7(8))")
+        has, self.root = self.root.contains(100)
+        self.assertFalse(has)
+        self.assertEqual(str(self.root), "((((1)2(((3)4)5))7)8)")
+
+        # containment failure
+        self.assertRaises(TypeError, self.root.contains, "1")
+        self.assertEqual(str(self.root), "((((1)2(((3)4)5))7)8)")
 
     def test_getRoot(self):
 

@@ -8,7 +8,7 @@ node values upward somewhat as well.  Because of this, insertion, deletion, and
 search all are O(n) operations; but they are amortized O(log n).
 """
 
-class SplayTree():
+class SplayNode():
 
     def __init__(self, value):
         self.value = value
@@ -28,7 +28,7 @@ class SplayTree():
         O(n), amortized O(log n).
         """
         insertion_point = self._find(value)
-        n = SplayTree(value)
+        n = SplayNode(value)
 
         # value already in the tree; add at leftmost position in right subtreepa
         if value == insertion_point.value:
@@ -86,7 +86,7 @@ class SplayTree():
 
         return n  # new root of the entire tree
 
-    def contains(self, value):
+    def contains_deprecated(self, value):
         """
         Returns whether or not the specified value exists in this tree.  Does 
         not splay the tree, since it does not return a node.
@@ -94,6 +94,15 @@ class SplayTree():
         """
         n = self._find(value)
         return n.value == value
+
+    def contains(self, value):
+        """
+        Returns whether or not the specified value exists in this tree.  Splays 
+        the tree, and returns a tuple of (bool, newRoot).
+        O(n), amortized O(log n).
+        """
+        n = self.search(value)
+        return (n.value==value, n)
 
     def getRoot(self):
         """
@@ -264,3 +273,69 @@ class SplayTree():
             while n.left is not None:
                 n = n.left
         return n
+
+
+class SplayTree():
+
+    def __init__(self, typing=None):
+        self.typing = typing
+        self.root = None
+        self._size = 0
+    
+    @property # treeInstance.size may be accessed like an attribute, but not set
+    def size(self):
+        return self._size
+
+    def insert(self, value):
+        """inserts value into tree.  sets type if this hasn't been done yet."""
+
+        if self.typing is None: # first insertion: set type of this tree
+            self.typing = type(value)
+        else: # perform type check
+            if type(value) != self.typing:
+                raise IOError("Type " + str(type(value)) + " is incompatible " +
+                              "with tree of type " + self.typing + ".")
+                # TODO allow different yet comparable types
+
+        if self.root is None:
+            self.root = SplayNode(value)
+        else:
+            self.root = self.root.insert(value)
+            self._size += 1
+
+    def delete(self, value):
+        """deletes value if found in tree"""
+        if self.root is not None: # else do nothing
+            if type(value) == self.typing: # else do nothing
+                hasValue, self.root = self.root.contains(value)
+                if hasValue: # always deletes root
+                    self.root = self.root.delete(value) 
+                    self._size -= 1
+
+    def contains(self, value):
+        """
+        Splays root and returns boolean for amortized fast access.  Will fail if 
+        an element with a type that is not comparable with the tree type is 
+        added; but will not fail just because the type is not this tree's type.
+        """
+        if self.root is None:
+            return False
+        else:
+            if type(value) != self.typing: # not an error
+                return False
+                # TODO allow different yet comparable types
+            else: 
+                hasElement, self.root = self.root.contains(value)
+                return hasElement
+
+    def __iter__(self):
+        if self.root is None:
+            return (x for x in range(0,0))
+        else:
+            return iter(self.root) # as implemented in nodes; always sorted
+
+    def __str__(self):
+        if self.root is None:
+            return "()"
+        else:
+            return str(self.root) # as implemented in nodes
