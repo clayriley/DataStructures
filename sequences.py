@@ -88,3 +88,11 @@ class ListSequence(Sequence):
 
     def __iter__(self):
         return (item for item in self.sequence)
+
+class TypedListSequence(ListSequence):
+    """
+    A typed sequence with a wrapper for a list under the hood.
+    """
+
+    def __init__(self):
+        self.sequence = myList.TypedList()
