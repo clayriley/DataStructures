@@ -4,26 +4,30 @@ Class for wrapping sequences of variable length.  The underlying structure may
 not be a linear sequence, but representations are.
 """
 
+import abc
 import splayTree as splay
 import myList
 
-class Sequence():
+class Sequence(abc.ABC):
 
+    @abc.abstractmethod
     def add(self):
         """note that behavior will vary by implementation."""
         raise NotImplementedError 
 
+    @abc.abstractmethod
     def remove(self):
         raise NotImplementedError
 
-    @property
+    @abc.abstractmethod
     def size(self):
-        """should be implemented as a property."""
-        raise NotImplementedError       
+        raise NotImplementedError
 
+    @abc.abstractmethod
     def __contains__(self, element):
         raise NotImplementedError
 
+    @abc.abstractmethod
     def __iter__(self):
         raise NotImplementedError
 
@@ -38,11 +42,7 @@ class SplaySequence(Sequence):
     """
 
     def __init__(self, typing=None):
-        self._tree = splay.SplayTree(typing)
-
-    @property
-    def tree(self):
-        return self._tree
+        self.tree = splay.SplayTree(typing)
 
     def add(self, element):
         """
@@ -57,7 +57,7 @@ class SplaySequence(Sequence):
         self.tree.delete(element)
 
     def size(self):
-        return self.tree.size
+        return self.tree.size # implemented as property
 
     def __contains__(self, element):
         return self.tree.contains(element)
