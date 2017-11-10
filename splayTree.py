@@ -293,15 +293,16 @@ class SplayTree():
             self.typing = type(value)
         else: # perform type check
             if type(value) != self.typing:
-                raise IOError("Type " + str(type(value)) + " is incompatible " +
-                              "with tree of type " + self.typing + ".")
+                raise TypeError("Type " + str(type(value)) + " is incompatible" +
+                                " with tree of type " + self.typing + ".")
                 # TODO allow different yet comparable types
 
+        # if no error:
         if self.root is None:
             self.root = SplayNode(value)
         else:
             self.root = self.root.insert(value)
-            self._size += 1
+        self._size += 1
 
     def delete(self, value):
         """deletes value if found in tree"""
