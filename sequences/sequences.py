@@ -5,8 +5,8 @@ not be a linear sequence, but representations are.
 """
 
 import abc
-import splayTree as splay
-import myList
+from .splayTree import *
+from .myList import *
 
 class Sequence(abc.ABC):
 
@@ -42,7 +42,7 @@ class SplaySequence(Sequence):
     """
 
     def __init__(self, typing=None):
-        self.tree = splay.SplayTree(typing)
+        self.tree = SplayTree(typing)
 
     def add(self, element):
         """
@@ -72,7 +72,7 @@ class ListSequence(Sequence):
     """
 
     def __init__(self):
-        self.sequence = myList.List()
+        self.sequence = List()
 
     def add(self, element):
         self.sequence.insert(element)
@@ -95,4 +95,4 @@ class TypedListSequence(ListSequence):
     """
 
     def __init__(self):
-        self.sequence = myList.TypedList()
+        self.sequence = TypedList()
