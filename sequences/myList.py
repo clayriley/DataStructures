@@ -21,7 +21,7 @@ class List():
         self._size += 1
 
     def remove(self, element):
-        for e,i in enumerate(self):
+        for i, e in enumerate(self):
             if e == element:
                 self.container = self.container[:i] + self.container[i+1:]
                 self._size -= 1
@@ -66,7 +66,7 @@ class TypedList():
 
     def remove(self, element):
         if type(element) == self.typing: # don't waste time if bad type
-            for e,i in enumerate(self):
+            for i,e in enumerate(self):
                 if e == element:
                     self.container = self.container[:i] + self.container[i+1:]
                     self._size -= 1
