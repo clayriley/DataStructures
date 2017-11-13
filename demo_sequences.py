@@ -8,6 +8,9 @@ import sequences
 
 
 def report(*sequences):
+    """
+    prints each sequence's contents along with its class name
+    """
     for sequence in sequences:
         print(type(sequence).__name__, '--- \t' + str(sequence))
 
@@ -20,10 +23,9 @@ def parseSequence(function_name, args):
 
 
 def main():
-    ap = argparse.ArgumentParser(description='Try out some operations on ' + 
-                                             'different sequence classes.')
+    ap = argparse.ArgumentParser(description='Try out some operations on different sequence classes.')
     ap.add_argument('--type', '-t', choices=['int','str', 'float'], 
-                    default='str', help='the type of the sequence elements')
+                    default='str', help='the type of the sequence elements, defaults to string')
     ap.add_argument('sequence', nargs='+')
     args = ap.parse_args()
     args.sequence = parseSequence(args.type, args.sequence)
