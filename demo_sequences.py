@@ -4,7 +4,7 @@ Script to try out a few implementations of a specified sequence.
 """
 
 import argparse
-import sequences
+import sequences as seq
 
 
 def report(*sequences):
@@ -31,9 +31,9 @@ def main():
     args.sequence = parseSequence(args.type, args.sequence)
 
     print('\nDemonstrating sequences with splay trees, lists, and typed lists under the hood')
-    splay = sequences.SplaySequence()
-    liszt = sequences.ListSequence()
-    tlist = sequences.TypedListSequence()
+    splay = seq.SplaySequence()
+    liszt = seq.ListSequence()
+    tlist = seq.TypedListSequence()
 
     print('\nAdding each element in order:')
     for element in args.sequence:
